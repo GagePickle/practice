@@ -1,15 +1,31 @@
-import { promises as fs } from "fs";
+import got from "got"
+import {promises as fs} from "fs"
 
-console.log("before contents");
+// TODO: Use your choice of 'then' or 'async/await'
+// fetch some data
+// write the data to a new file
 
-// Async immediately invoked function expression (ife)
-// Specifying 'async' in front of the fxn wraps this in a promise sort of like .then
 (async () => {
-  const contents = await fs.readFile(__filename, "utf-8");
-
-  fs.writeFile("output.txt", contents).then(() => {
-    console.log("success!");
-  });
+  try {
+    const filmsRes = await got("https://ghibliapi.herokuapp.com/films").json();
+  fs.writeFile("test.txt", filmsRes.toString())
+  .then(() => {
+    console.log("finished")
+    .catch(error => {console.error(error)})
+  })
+  } catch(error) {
+    console.error(error);
+  }
 })();
 
-console.log("after contents");
+got("https://ghibliapi.herokuapp.com/films")
+.json()
+.then(results => {
+  fs.writeFile("then.txt", result.toString());
+}).then(() => {
+  console.log("finished with them");
+})
+// catch will catch any error that occurs anywhere in the then chain
+}).catch((err) => {
+  console.error(err);
+})
