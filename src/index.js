@@ -1,21 +1,9 @@
-import fs from "fs";
+import { promises as fs } from "fs";
 
 console.log("before contents");
 
-// Synchronous is blocking
-fs.readFile(__filename, "utf8", (error, contents) => {
-  if (error) {
-    console.error(error);
-    return;
-  }
-
-  fs.writeFile("output.txt", contents, (writeError) => {
-    if (writeError) {
-      console.error(error);
-      return;
-    }
-    console.log("finsished");
-  });
-});
+fs.readFile(__filename)
+  .then((contents) => contents)
+  .then((contents2Write) => fs.writeFile("output.txt", contents2Write));
 
 console.log("after contents");
